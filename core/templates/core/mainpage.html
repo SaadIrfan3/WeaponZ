@@ -1,28 +1,98 @@
-WELCOME TO MAIN PAGE OF WEAPONS NIGGAA
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>WEAPONS</title>
-    </head>
-
+<head>
+    <title>WEAPONS</title>
     <style>
-        body { background-color:rgb(105, 13, 13);}
-        h1{
-        font-family: verdana;
-        font-size: 300%;
-        padding-left: 600px;
-        color: seashell;
+        body {
+            background-color: rgb(105, 13, 13); 
+            background-image: url('/static/images/weapon-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            
         }
-        h2{
-            font-family: verdana;
+
+        h1, h2 {
+            text-align: center;
+            color: rgb(255, 220, 180); 
+        }
+
+        h1 {
+            font-size: 300%;
+            margin-top: 40px;
+        }
+
+        h2 {
             font-size: 160%;
-            padding-left: 230px;
-            color: seashell
+            margin-top: 10px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin: 50px auto;
+            max-width: 1400px;
+        }
+
+        .weapon-button {
+            background-color: rgb(255, 220, 180);      
+            color: rgb(105, 13, 13);          
+            border: none;
+            padding: 10px 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 25px;
+            min-width: 180px;
+            font-family: Verdana;
+        }
+
+        .weapon-button:hover {
+            background-color: rgb(250, 200, 140); 
+            color: black;
+        }
+
+        .user-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .user-buttons a {
+            text-decoration: none;
+            font-size: 40px;
+            padding: 15px 30px;
+            border-radius: 12px;
+            background-color: rgb(255, 220, 180);
+            color: rgb(105, 13, 13);
+            transition: 0.3s;
+        }
+
+        .user-buttons a:hover {
+            background-color: rgb(250, 200, 140);
+            color: black;
         }
     </style>
+</head>
 
-    <body>
-        <h1> WEAPONS</h1>
-        <h2> We offer all types of weapons, from guns to knives to hand-grenades.</h2>
-    </body>
+<body>
+    <h1>WEAPONS</h1>
+    <h2>Buy or sell any type of weapons, from guns to knives to hand-grenades we have everything.</h2>
+
+    <div class="button-container">
+        <button type="button" class="weapon-button">Smgs</button>
+        <button type="button" class="weapon-button">Rifles</button>
+        <button type="button" class="weapon-button">Pistols</button>
+        <button type="button" class="weapon-button">Knives</button>
+        <button type="button" class="weapon-button">Snipers</button>
+        <button type="button" class="weapon-button">Grenades</button>
+    </div>
+
+    <div class="user-buttons">
+        <a href="/api/signup/">Sign Up</a>
+        <a href="/api/login/">Log In</a>
+    </div>
+</body>
 </html>

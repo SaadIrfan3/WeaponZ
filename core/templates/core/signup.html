@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup</title>
+    <style>
+        body {
+            background-color: rgb(105, 13, 13);
+            /*font-family: Verdana;*/
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 300%;
+            text-align: center;
+            color: rgb(255, 220, 180);
+            margin-top: 50px;
+        }
+
+        form {
+            background-color: rgb(255, 220, 180);
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: rgb(105, 13, 13);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 6px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            background-color: rgb(105, 13, 13);
+            color: seashell;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: rgb(80, 10, 10);
+        }
+        .Back {
+            /*background-color: rgb(255, 220, 180);      */
+            color: rgb(105, 13, 13);          
+            border: none;
+            padding: 10px 10px;
+            font-size: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 25px;
+            font-family: Verdana;}
+    </style>
+</head>
+
+<body>
+    <h1>User Signup</h1>
+    <form method="POST" action="/api/signup/">
+        <div class="mb-3">
+            <label>Username</label>
+            <input type="text" name="username" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Email</label>
+            <input type="text" name="email"required>
+        </div>
+
+        <div class="mb-3">
+            <label>Password</label>
+            <input type = "text" name = "password" required>
+        </div>
+
+        <div class="mb-3">
+            <button type="Sign Up!" class="btn btn-primary">Sign Up</button>
+        <div class="top-right-button">
+        <a href="{% url 'mainpage' %}" class="btn btn-primary">Back</a>
+        </div>
+    </body>
+"

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Shop</title>
+    </head>
+    <style>
+        body {background-color:rgb(105, 13, 13)}
+        h1{
+            color:rgb(255, 220, 180);
+            padding-left:600px;
+            font-family: verdana;
+            font-size: 300%;
+        }
+
+      .user-buttons a {
+        display: inline-block;
+        text-decoration: none;
+        font-size: 24px;
+        padding: 10px 20px;
+        border-radius: 12px;
+        background-color: rgb(255, 220, 180);
+        color: rgb(105, 13, 13);
+        transition: 0.3s;
+        }
+
+        .user-buttons a:hover {
+        background-color: rgb(230, 200, 160);
+        }
+
+         form {
+            background-color: rgb(255, 220, 180);
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);}
+        
+
+    </style>
+    <body>
+        <h1>Shop here</h1>
+
+        
+    <div class="user-buttons">
+    <a href="{% url 'sellweapons' %}">Sell</a>
+    <a href="{% url 'buyweapons' %}">Buy</a>
+</div>
+
+
+    <form method="POST">
+     {% csrf_token %}
+     <input type="text" name="weapon_name" placeholder="Weapon Name"><br>
+    <input type="number" name="price" placeholder="Price"><br>
+    <textarea name="description" placeholder="Description"></textarea><br>
+    <button type="submit">Post Ad</button>
+    </form>
+
+
+        <a href="{% url 'login' %}" class="btn btn-primary">Back</a>
+
+        <h2>All Ads</h2>
+        {% for ad in ads %}
+        <div style="background: white; margin-bottom: 10px; padding: 10px; border-radius: 10px;">
+        <strong>{{ ad.weapon_name }}</strong> — {{ ad.price }} coins<br>
+        <em>{{ ad.description }}</em><br>
+        Posted by {{ ad.user.username }} on {{ ad.posted_at }}
+         </div>
+        {% empty %}
+        <p>No ads posted yet.</p>
+        {% endfor %}
+
+    </body>
+</html>

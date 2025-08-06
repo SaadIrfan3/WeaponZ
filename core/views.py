@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.models import User
-
+from .models import WeaponsAd
 # Create your views here.
 
 @csrf_exempt
@@ -16,11 +16,11 @@ def signup_page(request):
 
         username = request.POST.get('username') or request.GET.get('username')
         email = request.POST.get('email') or request.GET.get('email')
-        password = request.Post.get('password') or request.Get.get('password')
+        password = request.POST.get('password') or request.GET.get('password')
 
         if not username or not email or not password:
             return JsonResponse({'message': 'PLez enter all credentials'})
-        if User.objects.filter.get(username=username).exists() or User.objects.filter.get(email=email):
+        if User.objects.filter(username=username).exists() or User.objects.filter(email=email).exists():
             return JsonResponse({'message': 'username or email already exists'})
         User.objects.create_user(
         username=username,
@@ -39,10 +39,10 @@ def login_page(request):
 
         if not username or not email or not password:
             return JsonResponse({'message': 'Please enter the correct credentials to login'})
-        user = authenticate(username=username,email=email,password=password)
+        user = authenticate(username=username,password=password)
         if user is not None:
             login(request,user)
-            return (request,'core/shop.html')
+            return redirect('shop')
         else:
             return JsonResponse({'error': 'invalid credentials bro'})
     return render(request,'core/login.html')
@@ -50,4 +50,50 @@ def login_page(request):
 @csrf_exempt
 def shop_weapons(request):
     return render(request,'core/shop.html')
+
+@csrf_exempt
+def sell_weapons(request):
+    if request.method == 'POST':
+        weapon_name= request.POST.get('weapon_name')
+        price=request.POST.get('price')
+        description=request.POST.get('description')
+
+        if not request.user.is_authenticated:
+            return JsonResponse({'message': 'plez login to post an ad'})
+        WeaponsAd.objects.create(
+            user=request.user,
+            ad_type='sell',
+            weapon_name=weapon_name,
+            price=price,
+            description=description
+        )
+        return redirect('shop')
+    return render(request,'core/sell.html')
+
+@csrf_exempt
+def buy_weapons(request):
+    if request.method == 'POST':
+        weapon_name = request.POST.get('weapon_name')
+        price= request.POST.get('price')
+        description=request.POST.get('description')
+
+        if not request.user.is_authenticated:
+            return JsonResponse({'message': 'plez login first to buy uwu'})
+        WeaponsAd.objects.create(
+            user=request.user,
+            ad_type='buy',
+            weapon_name=weapon_name,
+            price=price,
+            description=description
+        )
+        return redirect('shop')
+    return render(request,'core/buy.html')
+
+@csrf_exempt
+def shop_weapons(request):
+    ads = WeaponsAd.objects.all().order_by('posted_at')
+    return render(request, 'core/shop.html', {'ads': ads})
+
+
+
 
