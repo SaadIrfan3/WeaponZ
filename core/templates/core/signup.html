@@ -57,16 +57,19 @@
         button:hover {
             background-color: rgb(80, 10, 10);
         }
-        .Back {
-            /*background-color: rgb(255, 220, 180);      */
-            color: rgb(105, 13, 13);          
-            border: none;
-            padding: 10px 10px;
-            font-size: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-            border-radius: 25px;
-            font-family: Verdana;}
+         .top-right-button{
+            position:absolute;
+            top:20px;
+            right:20px;
+            background-color: rgb(255, 220, 180);
+            font-size: 40px;
+            color:rgb(105, 13, 13);
+        }
+        .login-button{
+            background-color: rgb(105, 13, 13);
+            color:rgb(255, 220, 180);
+        }
+
     </style>
 </head>
 
@@ -89,9 +92,7 @@
         </div>
 
         <div class="mb-3">
-            <button type="Sign Up!" class="btn btn-primary">Sign Up</button>
-        <div class="top-right-button">
-        <a href="{% url 'mainpage' %}" class="btn btn-primary">Back</a>
-        </div>
+         <button type="Singup" class="btn btn-primary signup-button ">Sign up!</button>
+            <a href="{% url 'signup' %}" class="btn btn-primary top-right-button">Back</a>
     </body>
 "

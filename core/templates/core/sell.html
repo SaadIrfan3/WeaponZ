@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <Title>SELL</Title>
+    <style>
+        body {background-color: rgb(105, 13, 13);
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);}
+        
+            form {
+            background-color: rgb(255,220,180);;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);}
+            
+            h1{
+                font-style: Verdana;
+                font-size: 300%;
+                padding-left: 80px;
+                background-color: rgb(255,220,180);
+            }
+            
+    </style>
+<body>
+     <h1>Place an Ad</h1>
+ <form method="POST" enctype="multipart/form-data">
+     {% csrf_token %}
+     <input type="text" name="weapon_name" placeholder="Weapon Name"><br>
+    <input type="number" name="price" placeholder="Price"><br>
+    <textarea name="description" placeholder="Description"></textarea><br>
+    <input type="file" name="image" placeholder="Image"><img><br>
+    <button type="submit">Post Ad</button>
+    </form>
+
+    <a href="{% url 'shop' %}" class="btn btn-primary">Back</a>
+        </body>

@@ -40,12 +40,24 @@
             width: 100%;
             padding: 15px;
             font-size: 18px;
-            background-color: rgb(105, 13, 13);
+           
             color: seashell;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+        }
+        .top-right-button{
+            position:absolute;
+            top:20px;
+            right:20px;
+            background-color: rgb(255, 220, 180);
+            font-size: 40px;
+            color:rgb(105, 13, 13);
+        }
+        .login-button{
+            background-color: rgb(105, 13, 13);
+            color:rgb(255, 220, 180);
         }
 
         </style>
@@ -68,7 +80,7 @@
         </div>
 
         <div class="mb-3">
-            <button type="Login" class="btn btn-primary">Log In</button>
-            <a href="{% url 'signup' %}" class="btn btn-primary">Back</a>
+            <button type="Login" class="btn btn-primary login-button ">Log In</button>
+            <a href="{% url 'signup' %}" class="btn btn-primary top-right-button">Back</a>
     </body>
 </html>

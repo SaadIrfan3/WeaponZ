@@ -40,16 +40,14 @@ def login_page(request):
         if not username or not email or not password:
             return JsonResponse({'message': 'Please enter the correct credentials to login'})
         user = authenticate(username=username,password=password)
-        if user is not None:
+        if user is not None: 
             login(request,user)
+            request.session['coins'] = 1000
             return redirect('shop')
         else:
             return JsonResponse({'error': 'invalid credentials bro'})
+        
     return render(request,'core/login.html')
-
-@csrf_exempt
-def shop_weapons(request):
-    return render(request,'core/shop.html')
 
 @csrf_exempt
 def sell_weapons(request):
@@ -57,6 +55,7 @@ def sell_weapons(request):
         weapon_name= request.POST.get('weapon_name')
         price=request.POST.get('price')
         description=request.POST.get('description')
+        image=request.FILES.get('image')
 
         if not request.user.is_authenticated:
             return JsonResponse({'message': 'plez login to post an ad'})
@@ -65,7 +64,8 @@ def sell_weapons(request):
             ad_type='sell',
             weapon_name=weapon_name,
             price=price,
-            description=description
+            description=description,
+            image=image,
         )
         return redirect('shop')
     return render(request,'core/sell.html')
@@ -76,23 +76,30 @@ def buy_weapons(request):
         weapon_name = request.POST.get('weapon_name')
         price= request.POST.get('price')
         description=request.POST.get('description')
-
         if not request.user.is_authenticated:
             return JsonResponse({'message': 'plez login first to buy uwu'})
+        price = float(request.POST.get('price',0))
+        coins = request.session.get('coins',0)
+
+        if coins >=price:
+            request.session['coins'] = coins - price
+
         WeaponsAd.objects.create(
             user=request.user,
             ad_type='buy',
-            weapon_name=weapon_name,
-            price=price,
-            description=description
+            weapon_name = weapon_name,
+            price= price,
+            description = description
         )
-        return redirect('shop')
-    return render(request,'core/buy.html')
+        #return redirect('shop')
+    ads = WeaponsAd.objects.filter(ad_type='sell').order_by('posted_at')
+    return render(request, 'core/buy.html', {'ads': ads, 'coins': request.session.get('coins',0)})
+
 
 @csrf_exempt
 def shop_weapons(request):
-    ads = WeaponsAd.objects.all().order_by('posted_at')
-    return render(request, 'core/shop.html', {'ads': ads})
+    
+    return render(request, 'core/shop.html',{'coins': request.session.get('coins',0)})
 
 
 

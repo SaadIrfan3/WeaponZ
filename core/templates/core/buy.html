@@ -1,0 +1,74 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Buy</title>
+    </head>
+    <style>
+        body {background-color:rgb(105, 13, 13)}
+        h1{
+            color:rgb(255, 220, 180);
+            padding-left:400px;
+            font-style: verdana;
+            font-size: 300%;
+        }
+        .top-right-button{
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 33px;
+            background-color: rgb(225,220,180);
+            color:rgb(105,13,13);
+            border-radius:5px;
+            
+        }
+    </style>
+    <body>
+        <h1>Buy weapons here through multiple ads</h1>
+
+        <a href="{% url 'shop' %}" class="btn btn-primary top-right-button">Back</a>
+
+        {% if coins %}
+         <div style="position: fixed; top: 20px;  background: rgb(225,220,180); padding: 10px 20px; border-radius: 10px; 
+         font-weight: bold; font-size: 18px; color: black;">
+         Coins: {{ coins }}
+        </div>
+        {% endif %}
+        
+        <h2>All Ads</h2>
+        {% for ad in ads %}
+        <div style="background: rgb(225,220,180); padding: 70px; border-radius: 40px; max-width:500px;margin-left:450px;margin-bottom:80px ">
+        <strong>{{ ad.weapon_name }}</strong> — {{ ad.price }} coins<br>
+        <em>{{ ad.description }}</em><br>
+        {% if ad.image %}
+        <img src="{{ ad.image.url }}" alt="{{ ad.weapon_name }}" style="max-width:200px;"><br>
+        {% else %}
+        <img src="{% static 'WeaponZ/weapons-bg.jpg' %}" alt="{{ ad.weapon_name }}" style="max-width:200px;"><br>
+        {% endif %}
+        Posted by {{ ad.user.username }} on {{ ad.posted_at }}<br>
+
+        <form method="POST" action = {% url 'buyweapons' %}>
+         {% csrf_token %}
+        <input type="hidden" name="weapon_name" value="{{ ad.weapon_name }}">
+        <input type="hidden" name="price" value="{{ ad.price }}">
+        <input type="hidden" name="description" value="{{ ad.description }}">
+        <button type="submit" style="background-color: rgb(105, 13, 13); color: white; padding: 8px 15px; border-radius: 5px; 
+        border: none; cursor: pointer;">Buy</button>
+        </form>
+
+         </div>
+        {% empty %}
+        <p>No ads posted yet.</p>
+        {% endfor %}
+
+        {% if ad.type == 'sell'%}
+         <form>method="POST" action = "{"url 'buyweapons'}</form>
+            {% csrf_token %}
+            <input type="hidden" name="ad_id" value="{{ ad.id }}">
+        {% endif %}
+        </form>
+        
+    </body>
+</html>
