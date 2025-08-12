@@ -1,74 +1,176 @@
 {% load static %}
-
 <!DOCTYPE html>
-
 <html>
-    <head>
-        <title>Buy</title>
-    </head>
+<head>
+    <title>Buy</title>
     <style>
-        body {background-color:rgb(105, 13, 13)}
-        h1{
-            color:rgb(255, 220, 180);
-            padding-left:400px;
-            font-style: verdana;
-            font-size: 300%;
+        body {
+            font-family: Verdana, sans-serif;
+            background: rgb(105,13,13);
+            margin: 0;
+            color: #fff;
         }
-        .top-right-button{
+
+        h1 {
+            color: rgb(255,220,180);
+            text-align: center;
+            margin: 30px 0;
+            font-size: 2.5rem;
+        }
+
+        .top-right-button {
+            background-color: rgb(255, 220, 180);
             position: fixed;
             top: 20px;
             right: 20px;
-            font-size: 33px;
-            background-color: rgb(225,220,180);
-            color:rgb(105,13,13);
-            border-radius:5px;
-            
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: rgb(105, 13, 13);
+            text-decoration: none;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+
+        .top-right-button:hover {
+            background-color: rgb(250, 200, 140);
+        }
+
+        .coins {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgb(250, 200, 140);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            color: black;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .categories {
+            background: rgb(255, 220, 180);
+            padding: 20px;
+            border-radius: 12px;
+            min-width: 200px;
+            color: black;
+        }
+
+        .categories h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .categories li {
+            margin: 8px 0;
+            text-decoration:underline;
+        }
+
+        .ads {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .ad-card {
+            background: rgb(255, 220, 180);
+            color: black;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .ad-card img {
+            max-width: 150px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .buy-btn {
+            background-color: #8B0000;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .buy-btn:hover {
+            background-color: #A52A2A;
         }
     </style>
-    <body>
-        <h1>Buy weapons here through multiple ads</h1>
+</head>
+<body>
 
-        <a href="{% url 'shop' %}" class="btn btn-primary top-right-button">Back</a>
+    <a href="{% url 'shop' %}" class="top-right-button">BACK</a>
+    {% if coins %}
+        <div class="coins">Coins: {{ coins }}</div>
+    {% endif %}
 
-        {% if coins %}
-         <div style="position: fixed; top: 20px;  background: rgb(225,220,180); padding: 10px 20px; border-radius: 10px; 
-         font-weight: bold; font-size: 18px; color: black;">
-         Coins: {{ coins }}
+    <h1>Buy Weapons</h1>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="categories">
+            <h2>Categories</h2>
+            <ul>
+                <li>Sniper Rifles</li>
+                <li>Submachine Guns</li>
+                <li>Rocket Launchers</li>
+                <li>Smoke Grenades</li>
+                <li>Stun Grenades</li>
+                <li>Hand Grenades</li>
+                <li>Pistols</li>
+                <li>Melee</li>
+                <li>Assault Rifles</li>
+                <li>Ray Guns</li>
+                <li>FlameThrowers</li>
+                <li>Miniguns</li>
+                <li>Light weight machineguns</li>
+                <li>Shotguns</li>
+                <li>Scoped Rifles</li>
+                <li>Grenade Launcher</li>
+            </ul>
         </div>
-        {% endif %}
-        
-        <h2>All Ads</h2>
-        {% for ad in ads %}
-        <div style="background: rgb(225,220,180); padding: 70px; border-radius: 40px; max-width:500px;margin-left:450px;margin-bottom:80px ">
-        <strong>{{ ad.weapon_name }}</strong> — {{ ad.price }} coins<br>
-        <em>{{ ad.description }}</em><br>
-        {% if ad.image %}
-        <img src="{{ ad.image.url }}" alt="{{ ad.weapon_name }}" style="max-width:200px;"><br>
-        {% else %}
-        <img src="{% static 'WeaponZ/weapons-bg.jpg' %}" alt="{{ ad.weapon_name }}" style="max-width:200px;"><br>
-        {% endif %}
-        Posted by {{ ad.user.username }} on {{ ad.posted_at }}<br>
 
-        <form method="POST" action = {% url 'buyweapons' %}>
-         {% csrf_token %}
-        <input type="hidden" name="weapon_name" value="{{ ad.weapon_name }}">
-        <input type="hidden" name="price" value="{{ ad.price }}">
-        <input type="hidden" name="description" value="{{ ad.description }}">
-        <button type="submit" style="background-color: rgb(105, 13, 13); color: white; padding: 8px 15px; border-radius: 5px; 
-        border: none; cursor: pointer;">Buy</button>
-        </form>
+        <!-- Ads -->
+        <div class="ads">
+            {% for ad in ads %}
+                <div class="ad-card">
+                    {% if ad.image %}
+                        <img src="{{ ad.image.url }}" alt="{{ ad.weapon_name }}">
+                    {% else %}
+                        <img src="{% static 'WeaponZ/weapons-bg.jpg' %}" alt="{{ ad.weapon_name }}">
+                    {% endif %}
+                    <strong>{{ ad.weapon_name }}</strong>
+                    <p>{{ ad.price }} coins</p>
+                    <em>{{ ad.description }}</em>
+                    <small>Posted by {{ ad.user.username }} on {{ ad.posted_at }}</small>
+                    <form method="POST" action="{% url 'buyweapons' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="weapon_name" value="{{ ad.weapon_name }}">
+                        <input type="hidden" name="price" value="{{ ad.price }}">
+                        <input type="hidden" name="description" value="{{ ad.description }}">
+                        <button type="submit" class="buy-btn">Buy</button>
+                    </form>
+                </div>
+            {% empty %}
+                <p>No ads posted yet.</p>
+            {% endfor %}
+        </div>
+    </div>
 
-         </div>
-        {% empty %}
-        <p>No ads posted yet.</p>
-        {% endfor %}
-
-        {% if ad.type == 'sell'%}
-         <form>method="POST" action = "{"url 'buyweapons'}</form>
-            {% csrf_token %}
-            <input type="hidden" name="ad_id" value="{{ ad.id }}">
-        {% endif %}
-        </form>
-        
-    </body>
+</body>
 </html>
