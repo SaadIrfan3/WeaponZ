@@ -158,12 +158,56 @@
                     <p>{{ ad.price }} coins</p>
                     <em>{{ ad.description }}</em>
                     <small>Posted by {{ ad.user.username }} on {{ ad.posted_at }}</small>
-                    <form method="POST" action="{% url 'buyweapons' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="weapon_name" value="{{ ad.weapon_name }}">
-                        <input type="hidden" name="price" value="{{ ad.price }}">
-                        <input type="hidden" name="description" value="{{ ad.description }}">
-                        <button type="submit" class="buy-btn">Buy</button>
+                   <form method="POST" onsubmit="event.preventDefault(); confirmPurchase(this);">
+    {% csrf_token %}
+    <input type="hidden" name="weapon_name" value="{{ ad.weapon_name }}">
+    <input type="hidden" name="price" value="{{ ad.price }}">
+    <input type="hidden" name="description" value="{{ ad.description }}">
+
+    <label>Quantity:
+        <input type="number" name="quantity" value="1" min="1">
+    </label>
+    <label>Discount Code:
+        <input type="text" name="discount_code">
+    </label>
+    <p>Total: {{ ad.price }} coins</p>
+    <button type="submit" class="buy-btn">Buy</button>
+</form>
+
+
+                        <script>
+    // Your ad price from Django template
+    let basePrice = '{{ ad.price }}';
+    let quantityInput = document.getElementById("quantity");
+    let totalSpan = document.getElementById("total");
+
+    // Update total price function
+    function updateTotal() {
+        let quantity = parseInt(quantityInput.value) || 1;
+        let total = basePrice * quantity;
+        totalSpan.textContent = total;
+    }
+
+    // Confirmation when buying
+    function confirmPurchase(form) {
+    let confirmed = confirm("Do you want to confirm the purchase?");
+    if (!confirmed) return;
+
+    let formData = new FormData(form);
+
+    fetch("{% url 'buyweapons' %}", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+        if (data.remaining_coins !== undefined) {
+            document.querySelector(".coins").textContent = "Coins: " + data.remaining_coins;
+        }
+    });
+}
+</script>
                     </form>
                 </div>
             {% empty %}
@@ -174,3 +218,31 @@
 
 </body>
 </html>
+
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+const stripe = Stripe("{{ STRIPE_PUBLISHABLE_KEY }}");
+
+async function pay() {
+  let response = await fetch("{% url 'createpayment' %}", {
+    method: "POST"
+  });
+  let data = await response.json();
+
+  const result = await stripe.confirmCardPayment(data.clientSecret, {
+    payment_method: {
+      card: { CARD }
+    }
+  });
+
+  if (result.error) {
+    alert("Payment failed: " + result.error.message);
+  } else {
+    if (result.paymentIntent.status === "succeeded") {
+      alert("✅ Payment successful!");
+    }
+  }
+}
+</script>
+<button onclick="pay()">Pay $10</button>

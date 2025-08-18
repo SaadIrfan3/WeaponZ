@@ -9,7 +9,9 @@ urlpatterns = [
     path('api/login/',views.login_page,name = 'login'),
     path('api/shop/',views.shop_weapons,name = 'shop'),
     path('api/shopsell/',views.sell_weapons,name='sellweapons'),
-    path('api/shopbuy/',views.buy_weapons,name='buyweapons')
+    path('api/shopbuy/',views.buy_weapons,name='buyweapons'),
+    path('api/discountpage/',views.discount_page,name='discountpage'),
+    path('api/createpayment/',views.create_payment,name='createpayment')
 ]
 
 if settings.DEBUG:
